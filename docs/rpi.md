@@ -58,11 +58,13 @@ Or use a GUI flasher (Balena Etcher, Raspberry Pi Imager, etc.).
 
 ## 6) SSH into the device
 
-Default user is configured in `nix/hosts/rpi-nitrokeyhsm-debug/configuration.nix`.
+Before building the image, add your user in
+`nix/hosts/rpi-nitrokeyhsm-debug/configuration.nix` under `users.users.<username>`.
+That user is what you will use for SSH.
 Example:
 
 ```sh
-ssh alextserepov@<rpi-ip>
+ssh <username>@<rpi-ip>
 ```
 
 ## 7) Verify the proxy service
