@@ -6,6 +6,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     pkcs11-proxy.url = "github:ppc-research/pkcs11-proxy";
     pkcs11-proxy.flake = false;
+    mtls-keys.url = "path:./keys";
+    mtls-keys.flake = false;
   };
 
   outputs = { self, nixpkgs, nixos-hardware, ... }@inputs:
@@ -46,6 +48,7 @@
               nix
               git
               opensc
+              openssl
               pcsc-tools
               gnutls
               pkcs11-proxy-ppc

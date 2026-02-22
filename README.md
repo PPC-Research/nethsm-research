@@ -24,6 +24,17 @@ nix build .#rpi-nitrokeyhsm-debug
 
 The image will be produced under `./result/sd-image/*.img`.
 
+## mTLS keys (local-only)
+
+This repo expects local mTLS material under `keys/` and copies it into the image at
+`/etc/pkcs11-proxy/mtls` during `nix build`. Generate a basic CA, server, and client cert:
+
+```sh
+./keys/generate.sh
+```
+
+Do not commit private keys to a shared repo; keep `keys/` local or encrypted.
+
 ## Development environment
 
 This flake provides a development shell with the minimal tooling needed to work on and debug the proxy stack:
