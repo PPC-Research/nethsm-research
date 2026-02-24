@@ -1,17 +1,5 @@
 {
   "nodes": {
-    "mtls-keys": {
-      "flake": false,
-      "locked": {
-        "path": "./keys",
-        "type": "path"
-      },
-      "original": {
-        "path": "./keys",
-        "type": "path"
-      },
-      "parent": []
-    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1771423359,
@@ -61,7 +49,6 @@
     },
     "root": {
       "inputs": {
-        "mtls-keys": "mtls-keys",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "pkcs11-proxy": "pkcs11-proxy"

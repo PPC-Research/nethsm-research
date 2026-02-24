@@ -12,8 +12,8 @@ cd nethsm-research
 
 ## 2) Generate local mTLS material (offline)
 
-These files are used for mTLS and are copied into the image at
-`/etc/pkcs11-proxy/mtls` during `nix build`.
+These files are used for mTLS and are provisioned to the device after flashing
+(they are not copied into the image).
 
 ```sh
 ./keys/generate.sh
@@ -99,7 +99,15 @@ Example:
 ssh <username>@<rpi-ip>
 ```
 
-## 7) Verify the proxy service
+## 7) Provision mTLS material to the device
+
+Copy the server mTLS files to the device over SSH (requires sudo on the device):
+
+```sh
+scripts/provision-mtls.sh --host <rpi-ip> --user <username>
+```
+
+## 8) Verify the proxy service
 
 ```sh
 systemctl status pkcs11-proxy
@@ -108,7 +116,7 @@ journalctl -u pkcs11-proxy -b
 
 The proxy listens on TCP port `2345` by default.
 
-## 8) Local client setup (mTLS + pkcs11-proxy)
+## 9) Local client setup (mTLS + pkcs11-proxy)
 
 This is a basic example of using the generated mTLS material to connect to the
 proxy from your workstation.
@@ -205,11 +213,8 @@ openssl pkeyutl -sign \
 
 ## Notes and troubleshooting
 
-- Build failures complaining about missing `keys/*.crt` mean the keys were not
-  generated before the build.
-- The mTLS keys are copied into the Nix store as part of the build. For real
-  deployments, switch to a proper secret management mechanism or generate keys
-  on first boot.
+- If `pkcs11-proxy` fails to start, make sure the mTLS files were provisioned
+  to `/etc/pkcs11-proxy/mtls` and restart the service.
 - If you change Wi‑Fi credentials or host settings, rebuild the image and flash
   again.
 - If `pkcs11-tool` fails with `certificate verify failed`, your server cert SAN
