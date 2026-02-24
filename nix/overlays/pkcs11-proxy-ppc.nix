@@ -17,6 +17,8 @@ final: prev: {
         --replace "/usr/bin/env bash" "${prev.bash}/bin/bash" \
         --replace "/usr/bin/env sh" "${prev.bash}/bin/bash"
       patchShebangs mksyscalls.sh
+      # Avoid leaking a local CMake cache into the build sandbox.
+      rm -rf build
     '';
 
     doCheck = false;

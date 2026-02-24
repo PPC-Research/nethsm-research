@@ -1,11 +1,13 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
   imports = [
     ../../modules/platforms/raspberry-pi-4.nix
     ../../modules/hsm/nitrokey-usb.nix
     ../../modules/services/pkcs11-proxy.nix
-  ];
+  ]
+  ++ lib.optional (builtins.pathExists ./wlan.nix) ./wlan.nix
+  ++ lib.optional (builtins.pathExists ./users.nix) ./users.nix;
 
   networking.hostName = "rpi-nitrokeyhsm-debug";
 
@@ -22,32 +24,37 @@
   time.timeZone = "Europe/Helsinki";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  users.users.alextserepov = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOQxe0N4f5NcLYVyUrhh7jw+SqS1HxcrFDdZ1BLukgU aleksandr.tserepov-savolainen@unikie.com"
-    ];
-    initialPassword = "test123";
-  };
-
   services.pkcs11Proxy.enable = true;
+  services.pkcs11Proxy.tlsMode = "mtls";
   services.pkcs11Proxy.provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+
+  environment.etc."pkcs11-proxy/mtls/ca.crt" = {
+    source = "${inputs.mtls-keys}/ca.crt";
+    mode = "0440";
+    group = "pkcs11-proxy";
+  };
+  environment.etc."pkcs11-proxy/mtls/server.crt" = {
+    source = "${inputs.mtls-keys}/server.crt";
+    mode = "0440";
+    group = "pkcs11-proxy";
+  };
+  environment.etc."pkcs11-proxy/mtls/server.key" = {
+    source = "${inputs.mtls-keys}/server.key";
+    mode = "0440";
+    group = "pkcs11-proxy";
+  };
+  environment.etc."pkcs11-proxy/mtls/client.crt" = {
+    source = "${inputs.mtls-keys}/client.crt";
+    mode = "0440";
+    group = "pkcs11-proxy";
+  };
+  environment.etc."pkcs11-proxy/mtls/client.key" = {
+    source = "${inputs.mtls-keys}/client.key";
+    mode = "0440";
+    group = "pkcs11-proxy";
+  };
 
   networking.firewall.allowedTCPPorts = [ 22 2345 ];
 
-  networking.useNetworkd = true;
-  systemd.network.networks."10-wlan" = {
-    matchConfig.name = "wlan0";
-    networkConfig.DHCP = "yes";
-    dhcpV4Config.UseHostname = true;
-  };
-
-  networking.wireless = {
-    enable = true;
-    userControlled.enable = false;
-    interfaces = [ "wlan0" ];
-    extraConfig = "country=FI";
-    networks."DNA-WIFI-E4C4".psk = "";
-  };
+  # Wi-Fi configuration lives in ./wlan.nix (user-provided).
 }

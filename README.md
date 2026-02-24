@@ -24,6 +24,13 @@ nix build .#rpi-nitrokeyhsm-debug
 
 The image will be produced under `./result/sd-image/*.img`.
 
+## Wi‑Fi configuration (optional)
+
+Wi‑Fi settings live in `nix/hosts/rpi-nitrokeyhsm-debug/wlan.nix`. This file is
+ignored by git and must be created locally if you want WLAN enabled.
+If you keep it untracked, build with `nix build path:.#rpi-nitrokeyhsm-debug`
+so Nix includes local files.
+
 ## mTLS keys (local-only)
 
 This repo expects local mTLS material under `keys/` and copies it into the image at

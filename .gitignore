@@ -1,0 +1,9 @@
+keys/*.key
+keys/*.csr
+keys/*.srl
+keys/*.crt
+nix/hosts/rpi-nitrokeyhsm-debug/wlan.nix
+nix/hosts/rpi-nitrokeyhsm-debug/users.nix
+result
+*.log
+*~
