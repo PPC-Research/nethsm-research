@@ -48,6 +48,12 @@ Provision the server mTLS files after the device boots:
 scripts/provision-mtls.sh --host <rpi-ip> --user <username>
 ```
 
+Provision the server mTLS files after the device boots:
+
+```sh
+scripts/provision-mtls.sh --host <rpi-ip> --user <username>
+```
+
 Do not commit private keys to a shared repo; keep `keys/` local or encrypted.
 
 ## Development environment
