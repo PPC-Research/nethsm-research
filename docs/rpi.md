@@ -16,7 +16,8 @@ These files are used for mTLS and are provisioned to the device after flashing
 (they are not copied into the image).
 
 ```sh
-./keys/generate.sh
+scripts/generate-mtls-keys.sh --key-dir ./keys \
+  --san DNS:rpi-nitrokeyhsm-debug --san IP:<rpi-ip>
 ```
 
 Outputs (local-only):

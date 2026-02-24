@@ -38,7 +38,14 @@ after flashing (nothing is copied into the Nix store or image). Generate a basic
 CA, server, and client cert:
 
 ```sh
-./keys/generate.sh
+scripts/generate-mtls-keys.sh --key-dir ./keys \
+  --san DNS:rpi-nitrokeyhsm-debug --san IP:192.168.1.191
+```
+
+Provision the server mTLS files after the device boots:
+
+```sh
+scripts/provision-mtls.sh --host <rpi-ip> --user <username>
 ```
 
 Provision the server mTLS files after the device boots:
