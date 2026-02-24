@@ -33,11 +33,18 @@ so Nix includes local files.
 
 ## mTLS keys (local-only)
 
-This repo expects local mTLS material under `keys/` and copies it into the image at
-`/etc/pkcs11-proxy/mtls` during `nix build`. Generate a basic CA, server, and client cert:
+This repo expects local mTLS material under `keys/` and provisions it to the device
+after flashing (nothing is copied into the Nix store or image). Generate a basic
+CA, server, and client cert:
 
 ```sh
 ./keys/generate.sh
+```
+
+Provision the server mTLS files after the device boots:
+
+```sh
+scripts/provision-mtls.sh --host <rpi-ip> --user <username>
 ```
 
 Do not commit private keys to a shared repo; keep `keys/` local or encrypted.
