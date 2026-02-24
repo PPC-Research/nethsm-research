@@ -2,7 +2,8 @@
 
 This folder is for **locally generated** mTLS material (offline, no HSM).
 
-- Run `./generate.sh` to create a simple CA, server cert, and client cert.
+- Generate a simple CA, server cert, and client cert from the repo root:
+  `scripts/generate-mtls-keys.sh --key-dir ./keys --san DNS:<host> --san IP:<addr>`
 - Provision the server mTLS files to the device after flashing (see
   `scripts/provision-mtls.sh`).
 
